@@ -34,7 +34,7 @@ jobs:
 
       - name: Install Dependencies
         # Use 'npm ci' for clean installs in CI environments
-        run: npm ci
+        run: npm install
 
       - name: Build Project (This runs 'npm run build' using vite.config.ts)
         run: npm run build
