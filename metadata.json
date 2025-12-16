@@ -1,0 +1,7 @@
+{
+  "name": "Christmas tree",
+  "description": "A high-fidelity, luxurious 3D interactive Christmas experience featuring the Arix Signature Emerald Tree and AI-generated holiday wishes.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
