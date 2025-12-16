@@ -21,15 +21,39 @@ function App() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const modelRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  
+  // New state to track if the *initial* interaction has happened
+  const [hasInteracted, setHasInteracted] = useState(false);
 
-  // Dedicated Play Handler for Star Interaction
-  // "When click or tap on the star... music keeps playing"
-  const handleStarPlay = () => {
+  /**
+   * HANDLER: Initial Interaction to Start Audio
+   * This runs on the first click/tap on the main container to bypass browser autoplay rules.
+   */
+  const handleInitialInteraction = () => {
+    // Only run this logic on the very first interaction
+    if (!hasInteracted) {
+      setHasInteracted(true);
+        
+      if (audioRef.current) {
+        audioRef.current.play().catch(error => {
+          console.error("Audio playback failed (usually harmless if muted):", error);
+        });
+      }
+    }
+  };
+
+  /**
+   * HANDLER: Dedicated Play Handler for Star Interaction
+   * This is called by the <Scene> component when the user clicks the Star.
+   */
+  const handleStarClick = () => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    // Force play. If already playing, this is harmless.
-    // If paused, it starts.
+    // 1. Ensure the initial interaction flag is set after this click
+    setHasInteracted(true);
+
+    // 2. Play the music
     audio.play()
       .then(() => setIsAudioPlaying(true))
       .catch(err => {
@@ -37,10 +61,15 @@ function App() {
       });
   };
 
-  // UI Toggle Button Handler (Mute/Unmute/Play/Pause)
+  /**
+   * HANDLER: UI Toggle Button Handler (Mute/Unmute/Play/Pause)
+   */
   const handleManualToggle = async () => {
     const audio = audioRef.current;
     if (!audio) return;
+
+    // Ensure the interaction flag is set if the user uses the toggle first
+    setHasInteracted(true);
 
     try {
       if (audio.paused) {
@@ -80,10 +109,6 @@ function App() {
         const hand = predictions[0];
         
         // GESTURE LOGIC:
-        // 'open' -> CHAOS (Unleash)
-        // 'closed' / 'pinch' -> FORMED
-        // bounding box x/y -> Rotation
-        
         if (hand.label === 'open') {
           setTreeState(TreeState.CHAOS);
         } else if (hand.label === 'closed' || hand.label === 'pinch') {
@@ -116,7 +141,12 @@ function App() {
   }, [isVideoEnabled]);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black text-white selection:bg-pink-200 selection:text-black">
+    // Attach the initial interaction handler to the main container
+    <div 
+        onClick={handleInitialInteraction} // <--- ATTACHES MUSIC START LOGIC HERE
+        onTouchStart={handleInitialInteraction} // Adds support for touch devices
+        className="relative w-full h-screen overflow-hidden bg-black text-white selection:bg-pink-200 selection:text-black"
+    >
       {/* Declarative Audio Element */}
       <audio 
         ref={audioRef}
@@ -127,8 +157,8 @@ function App() {
         onPause={() => setIsAudioPlaying(false)}
         onError={(e) => console.error("Audio tag error:", e)}
       >
-        <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/e/e9/We_Wish_You_a_Merry_Christmas.ogg/We_Wish_You_a_Merry_Christmas.ogg.mp3" type="audio/mpeg" />
-        <source src="https://upload.wikimedia.org/wikipedia/commons/e/e9/We_Wish_You_a_Merry_Christmas.ogg" type="audio/ogg" />
+        {/* CORRECTED AUDIO SOURCE URL */}
+        <source src="/We_Wish_You_A_Merry_Christmas.mp3" type="audio/mpeg" /> 
       </audio>
 
       {/* Hidden Video Element for ML */}
@@ -145,7 +175,7 @@ function App() {
       <Scene 
         treeState={treeState} 
         rotation={rotation} 
-        onStarClick={handleStarPlay}
+        onStarClick={handleStarClick}
       />
       
       {/* Interface Layer */}
