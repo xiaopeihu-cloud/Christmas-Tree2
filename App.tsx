@@ -26,33 +26,30 @@ function App() {
   const [hasInteracted, setHasInteracted] = useState(false);
 
   /**
-   * HANDLER: Initial Interaction to Start Audio
-   * This runs on the first click/tap on the main container to bypass browser autoplay rules.
+   * HANDLER: Initial Interaction (Passive Flag Setter)
+   * This function simply sets the interaction flag for any click outside of the star.
+   * It is now passive and does NOT try to play the audio.
    */
   const handleInitialInteraction = () => {
-    // Only run this logic on the very first interaction
     if (!hasInteracted) {
       setHasInteracted(true);
-        
-      if (audioRef.current) {
-        audioRef.current.play().catch(error => {
-          console.error("Audio playback failed (usually harmless if muted):", error);
-        });
-      }
     }
   };
 
   /**
-   * HANDLER: Dedicated Play Handler for Star Interaction
+   * HANDLER: Dedicated Play Handler for Star Interaction (Active Player)
    * This is called by the <Scene> component when the user clicks the Star.
    */
   const handleStarClick = () => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    // 1. Ensure the initial interaction flag is set after this click
-    setHasInteracted(true);
-
+    // 1. CRITICAL FIX: Ensure the initial interaction flag is set 
+    // to satisfy the browser's requirement for user interaction.
+    if (!hasInteracted) {
+        setHasInteracted(true);
+    }
+    
     // 2. Play the music
     audio.play()
       .then(() => setIsAudioPlaying(true))
@@ -143,7 +140,7 @@ function App() {
   return (
     // Attach the initial interaction handler to the main container
     <div 
-        onClick={handleInitialInteraction} // <--- ATTACHES MUSIC START LOGIC HERE
+        onClick={handleInitialInteraction} // <--- Only sets interaction flag (Passive)
         onTouchStart={handleInitialInteraction} // Adds support for touch devices
         className="relative w-full h-screen overflow-hidden bg-black text-white selection:bg-pink-200 selection:text-black"
     >
@@ -175,7 +172,7 @@ function App() {
       <Scene 
         treeState={treeState} 
         rotation={rotation} 
-        onStarClick={handleStarClick}
+        onStarClick={handleStarClick} // <--- Active Player
       />
       
       {/* Interface Layer */}
