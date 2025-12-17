@@ -59,13 +59,13 @@ export const UIOverlay = ({ treeState, onToggleCamera }: { treeState: TreeState,
       {/* Wish Dialog / Gift Window */}
       {isWishOpen && (
         <>
-          {/* Backdrop: Clicking anywhere outside closes the window */}
+          {/* Backdrop */}
           <div 
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-md pointer-events-auto cursor-pointer transition-all duration-500"
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-md pointer-events-auto cursor-pointer"
             onClick={() => setIsWishOpen(false)} 
           />
 
-          {/* Modal Window: stopPropagation prevents inner clicks from closing */}
+          {/* Modal Window */}
           <div 
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[85%] max-w-md bg-white/10 backdrop-blur-xl p-10 rounded-3xl border border-white/20 shadow-[0_0_50px_rgba(0,0,0,0.5)] pointer-events-auto transition-all animate-in fade-in zoom-in duration-300"
             onClick={(e) => e.stopPropagation()} 
@@ -77,23 +77,19 @@ export const UIOverlay = ({ treeState, onToggleCamera }: { treeState: TreeState,
                 </div>
               </div>
               
-              <h2 className="text-xl font-serif text-pink-100 tracking-wider">Dein Geschenk</h2>
+              {/* Changed to English */}
+              <h2 className="text-xl font-serif text-pink-100 tracking-wider uppercase">Your Gift</h2>
               
               <p className="text-white text-lg md:text-xl font-serif italic leading-relaxed px-2">
                 "{wish}"
               </p>
 
-              <div className="pt-4">
-                <p className="text-[9px] uppercase tracking-[0.3em] text-white/40">
-                  Tap anywhere to close
-                </p>
-              </div>
+              {/* "Tap anywhere" instruction removed */}
             </div>
           </div>
         </>
       )}
 
-      {/* Header spacer */}
       <div />
 
       {/* Footer Actions */}
