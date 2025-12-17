@@ -107,20 +107,45 @@ function App() {
   };
 
   // Initialize/Toggle Video
-  const toggleVideo = async () => {
+const toggleVideo = async () => {
     if (!isVideoEnabled) {
       try {
+        // 1. SAFETY CHECK: Is the script actually loaded in index.html?
+        if (!window.handTrack) {
+          alert("Handtrack library not loaded yet. Please wait a moment and try again.");
+          return;
+        }
+
+        console.log("Starting Magic...");
+        
+        // 2. LOAD MODEL (with explicit error catching)
         if (!modelRef.current) {
-          modelRef.current = await window.handTrack.load(modelParams);
+          console.log("Attempting to load model with params:", modelParams);
+          // Force a wait for the load
+          const loadedModel = await window.handTrack.load(modelParams);
+          
+          if (loadedModel) {
+            modelRef.current = loadedModel;
+            console.log("✅ Model loaded successfully!");
+          } else {
+            throw new Error("Model loaded but returned null");
+          }
         }
         
+        // 3. START VIDEO
         const status = await window.handTrack.startVideo(videoRef.current);
+        console.log("📸 Camera status:", status);
+        
         if (status) {
           setIsVideoEnabled(true);
-          setTimeout(() => runDetection(), 500);
+          // Give the video a moment to stream frames
+          setTimeout(() => {
+            console.log("🚀 Starting detection loop...");
+            runDetection();
+          }, 1000);
         }
       } catch (err) {
-        console.error("Failed to start camera:", err);
+        console.error("❌ AI Initialization failed:", err);
       }
     } else {
       if (window.handTrack) {
