@@ -68,23 +68,28 @@ function App() {
 
   // 2. Process hand coordinates and trigger CHAOS
   const handleHandMovement = (prediction: any) => {
-    if (treeState !== TreeState.CHAOS) {
-      setTreeState(TreeState.CHAOS);
-    }
+  // DEBUG: This will tell us if the AI is actually talking to this function
+  console.log("AI sees:", prediction.label, "Confidence:", prediction.score);
 
-    const [x, y, width, height] = prediction.bbox;
-    const centerX = x + width / 2;
-    const centerY = y + height / 2;
+  // 1. FORCE UNLEASH: If we see anything with 50%+ confidence, unleash the tree
+  if (treeState !== TreeState.CHAOS && prediction.score > 0.5) {
+    console.log("TRIGGERING CHAOS MODE!");
+    setTreeState(TreeState.CHAOS);
+  }
 
-    // Use default values if videoRef is not yet available to avoid division by zero
-    const videoWidth = videoRef.current?.width || 640;
-    const videoHeight = videoRef.current?.height || 480;
-    
-    const nx = (centerX / videoWidth) * 2 - 1;
-    const ny = (centerY / videoHeight) * 2 - 1;
+  // 2. MOVEMENT: Update rotation regardless of state to ensure it follows you
+  const [x, y, width, height] = prediction.bbox;
+  const centerX = x + width / 2;
+  const centerY = y + height / 2;
 
-    setRotation({ x: ny * 0.5, y: nx * 0.5 });
-  };
+  const videoWidth = videoRef.current?.width || 640;
+  const videoHeight = videoRef.current?.height || 480;
+  
+  const nx = (centerX / videoWidth) * 2 - 1;
+  const ny = (centerY / videoHeight) * 2 - 1;
+
+  setRotation({ x: ny * 0.5, y: nx * 0.5 });
+};
 
   // 3. Cleaned Detection Loop (Moved inside to access state/refs)
   const runDetection = () => {
