@@ -97,33 +97,39 @@ function App() {
     }
   };
   
-// Inside your runDetection function
 const runDetection = () => {
-  if (!model || !videoRef.current || !isVideoEnabled) return;
+  // 1. Safety check
+  if (!model || !videoRef.current || !isVideoEnabled) {
+    console.log("AI detection stopped: Model or Video not ready");
+    return;
+  }
 
+  // 2. Run detection
   model.detect(videoRef.current).then((predictions) => {
     if (predictions && predictions.length > 0) {
-      // Your logic to handle predictions (e.g., updating tree state)
+      // AI found a hand!
+      console.log("Hand detected! Confidence:", predictions[0].score);
+      
+      // Call your function that triggers the CHAOS/Unleash state
       handleHandMovement(predictions[0]); 
     }
 
-    // PERFORMANCE FIX: Use setTimeout to create a "breathing room" 
-    // before the next detection frame.
-    setTimeout(() => {
-      if (isVideoEnabled) {
-        requestAnimationFrame(runDetection);
-      }
-    }, 40); // 40ms = ~25 Frames Per Second
+    // 3. Continue the loop as long as camera is on
+    if (isVideoEnabled) {
+      requestAnimationFrame(runDetection);
+    }
+  }).catch(err => {
+    console.error("AI Loop Error:", err);
   });
 };
-
+  
   // 1. Define the optimized parameters outside or inside the component
 const modelParams = {
   flipHorizontal: true,   
   maxNumBoxes: 1,         // Performance Boost: Only track one hand
   iouThreshold: 0.5,      
   scoreThreshold: 0.6,    // Balanced sensitivity
-  modelSize: 'small',     // Performance Boost: Smaller model is faster for mobile
+  modelSize: 'base',     // Performance Boost: Smaller model is faster for mobile
 };
 
 // 2. Locate the loading logic
