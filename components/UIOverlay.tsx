@@ -101,7 +101,7 @@ export const UIOverlay = ({ treeState, onToggleCamera }: { treeState: TreeState,
           <div className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/30 flex items-center justify-center backdrop-blur-md group-hover:border-pink-300 group-hover:bg-pink-500/10 transition-all">
             <Hand className="w-5 h-5 md:w-6 md:h-6 text-white group-hover:text-pink-300" />
           </div>
-          <span className="text-[9px] tracking-[0.2em] uppercase text-white/50 group-hover:text-pink-200">Magic Touch</span>
+          <span className="text-[9px] tracking-[0.2em] uppercase text-white/50 group-hover:text-pink-200">Jingle Hand</span>
         </button>
 
         <button 
@@ -111,7 +111,7 @@ export const UIOverlay = ({ treeState, onToggleCamera }: { treeState: TreeState,
           <div className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/30 flex items-center justify-center backdrop-blur-md group-hover:border-pink-300 group-hover:bg-pink-500/10 transition-all">
             <Gift className="w-5 h-5 md:w-6 md:h-6 text-white group-hover:text-pink-300" />
           </div>
-          <span className="text-[9px] tracking-[0.2em] uppercase text-white/50 group-hover:text-pink-200">Open Gift</span>
+          <span className="text-[9px] tracking-[0.2em] uppercase text-white/50 group-hover:text-pink-200">Gift Box</span>
         </button>
       </div>
     </div>
