@@ -60,22 +60,30 @@ export const UIOverlay = ({ treeState, onToggleCamera }: { treeState: TreeState,
       )}
 
       {/* Wish Dialog */}
-      {isWishOpen && wish && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-auto bg-black/60 backdrop-blur-md z-50 animate-fade-in px-6">
-          <div className="max-w-md w-full bg-white/10 border border-white/20 p-8 rounded-2xl backdrop-blur-xl text-center shadow-2xl">
-            <Sparkles className="w-8 h-8 text-pink-300 mx-auto mb-6 animate-spin-slow" />
-            <p className="text-lg md:text-xl font-serif italic text-pink-50 leading-relaxed mb-8">
-              "{wish}"
-            </p>
-            <button 
-              onClick={() => setIsWishOpen(false)}
-              className="px-8 py-3 bg-white text-black text-xs tracking-widest uppercase hover:bg-pink-100 transition-colors rounded-full font-bold"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+      {isGiftOpen && (
+  <>
+    {/* 1. THE BACKDROP: Clicking this closes the window */}
+    <div 
+      className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+      onClick={() => setIsGiftOpen(false)} 
+    />
+
+    {/* 2. THE GIFT WINDOW: We use e.stopPropagation() so clicking INSIDE doesn't close it */}
+    <div 
+      className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-md bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-2xl"
+      onClick={(e) => e.stopPropagation()} 
+    >
+      {/* Remove the Close Button from here */}
+      
+      <div className="text-center space-y-4">
+        <h2 className="text-2xl font-serif text-pink-200">Dein Geschenk</h2>
+        <p className="text-white/80 italic">"Frohe Weihnachten und ein glückliches neues Jahr!"</p>
+        
+        {/* Your gift content here */}
+      </div>
+    </div>
+  </>
+)}
 
       {/* Footer Actions */}
       <div className="flex justify-between items-end pointer-events-auto w-full max-w-7xl mx-auto">
