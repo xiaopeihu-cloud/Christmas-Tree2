@@ -96,40 +96,26 @@ function App() {
       setIsVideoEnabled(false);
     }
   };
+  
+// Inside your runDetection function
+const runDetection = () => {
+  if (!model || !videoRef.current || !isVideoEnabled) return;
 
-  const runDetection = () => {
-    if (!modelRef.current || !videoRef.current || !isVideoEnabled) return;
+  model.detect(videoRef.current).then((predictions) => {
+    if (predictions && predictions.length > 0) {
+      // Your logic to handle predictions (e.g., updating tree state)
+      handleHandMovement(predictions[0]); 
+    }
 
-    modelRef.current.detect(videoRef.current).then((predictions: any[]) => {
-      if (predictions.length > 0) {
-        // Assume the first hand found is the primary controller
-        const hand = predictions[0];
-        
-        // GESTURE LOGIC:
-        if (hand.label === 'open') {
-          setTreeState(TreeState.CHAOS);
-        } else if (hand.label === 'closed' || hand.label === 'pinch') {
-          setTreeState(TreeState.FORMED);
-        }
-
-        // ROTATION LOGIC:
-        const centerX = hand.bbox[0] + hand.bbox[2] / 2;
-        const centerY = hand.bbox[1] + hand.bbox[3] / 2;
-        
-        const normX = (centerX / videoRef.current!.width) * 2 - 1; 
-        const normY = (centerY / videoRef.current!.height) * 2 - 1;
-
-        setRotation({ x: normX, y: normY });
-      } else {
-        // Default to formed if no hand detected
-        setTreeState(TreeState.FORMED);
-      }
-      
+    // PERFORMANCE FIX: Use setTimeout to create a "breathing room" 
+    // before the next detection frame.
+    setTimeout(() => {
       if (isVideoEnabled) {
         requestAnimationFrame(runDetection);
       }
-    });
-  };
+    }, 40); // 40ms = ~25 Frames Per Second
+  });
+};
 
   useEffect(() => {
     if (isVideoEnabled) {
