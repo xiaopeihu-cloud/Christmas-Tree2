@@ -37,12 +37,12 @@ export const UIOverlay = ({ treeState, onToggleCamera }: { treeState: TreeState,
       {/* Merry Christmas Animation */}
       <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ${treeState === TreeState.CHAOS ? 'opacity-100' : 'opacity-0'}`}>
           <div className="w-full max-w-[90vw] mx-auto text-center px-4">
-            <h1 className={`font-display text-3xl sm:text-5xl md:text-7xl text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] tracking-[0.2em] transition-all duration-[3000ms] ease-out leading-tight whitespace-nowrap sm:whitespace-normal ${
-              treeState === TreeState.CHAOS 
-                ? 'translate-y-[-80px] md:translate-y-[-150px] scale-110 md:scale-125' 
-                : 'translate-y-0 scale-100'
-            }`}>
-                  MERRY CHRISTMAS
+            <h1 className={`font-display text-[10vw] sm:text-5xl md:text-7xl text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] tracking-[0.2em] transition-all duration-[3000ms] ease-out leading-none text-center ${
+  treeState === TreeState.CHAOS 
+    ? 'opacity-100 translate-y-[-15vh] scale-100' 
+    : 'opacity-0 translate-y-0 scale-90'
+}`}>
+  MERRY<br className="sm:hidden" /> CHRISTMAS
             </h1>
           </div>
       </div>
