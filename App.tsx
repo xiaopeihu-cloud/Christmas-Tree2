@@ -117,11 +117,23 @@ const runDetection = () => {
   });
 };
 
-  useEffect(() => {
-    if (isVideoEnabled) {
-      runDetection();
-    }
-  }, [isVideoEnabled]);
+  // 1. Define the optimized parameters outside or inside the component
+const modelParams = {
+  flipHorizontal: true,   
+  maxNumBoxes: 1,         // Performance Boost: Only track one hand
+  iouThreshold: 0.5,      
+  scoreThreshold: 0.6,    // Balanced sensitivity
+  modelSize: 'small',     // Performance Boost: Smaller model is faster for mobile
+};
+
+// 2. Locate the loading logic
+useEffect(() => {
+  // Use the parameters here
+  handTrack.load(modelParams).then(lmodel => {
+    setModel(lmodel);
+    console.log("Model Loaded!");
+  });
+}, []);
 
   return (
     // Attach the initial interaction handler to the main container
