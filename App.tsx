@@ -16,7 +16,7 @@ const modelParams = {
   flipHorizontal: true,
   maxNumBoxes: 1,
   iouThreshold: 0.5,
-  scoreThreshold: 0.6,
+  scoreThreshold: 0.4,
   modelSize: 'base', 
 };
 
@@ -96,7 +96,11 @@ function App() {
     if (!modelRef.current || !videoRef.current || !isVideoEnabled) return;
 
     modelRef.current.detect(videoRef.current).then((predictions: any[]) => {
+      // DEBUG: If you see this, the loop is working but AI is "blind"
+      // console.log("AI is scanning... Predictions found:", predictions.length);
+
       if (predictions && predictions.length > 0) {
+        console.log("✅ AI Found something!", predictions[0].label);
         handleHandMovement(predictions[0]);
       }
 
@@ -177,6 +181,7 @@ const toggleVideo = async () => {
         className="hidden" 
         width="640" 
         height="480"
+        style={{ width: '640px', height: '480px' }} // Added explicit style
         playsInline 
         muted
       />
