@@ -4,12 +4,18 @@ import { TreeState } from '../types';
 
 const LUXURY_WISHES = [
   "May your holidays sparkle with moments of love, laughter, and goodwill.",
+  "Frohe Weihnachten und ein glückliches neues Jahr!",
   "Wishing you a season of gladness, a season of cheer, and to top it all off, a wonderful year.",
+  "Besinnliche Feiertage und die besten Wünsche für das kommende Jahr.",
   "May the magic of the holidays fill your home with joy and peace.",
+  "Wundervolle Weihnachtszeit!",
   "Sending you the spirit of love, joy, and giving. Unwrap it with love.",
+  "Ein Fest voller Wärme, ein Herz voller Glück und ein Jahr voller Wunder.",
   "May this festive season sparkle and shine, may all of your wishes and dreams come true.",
+  "Genieße die kostbaren Momente der Stille und die Freude des Schenkens.",
   "Wishing you a Christmas that's merry and bright, and a New Year filled with promise.",
   "May the holiday spirit find a home in your heart and lingering there, bring you inner peace.",
+  "Sternenglanz und Plätzchenduft – wir wünschen dir eine wundervolle Weihnachtszeit!",
   "Here’s to a season of love and harmony, warmth and joy.",
   "May your world be filled with warmth and good cheer this Holy season, and throughout the year.",
   "Wishing you peace, love, and joy this holiday season and throughout 2026."
@@ -80,7 +86,7 @@ export const UIOverlay = ({ treeState, onToggleCamera }: { treeState: TreeState,
           <div className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/30 flex items-center justify-center backdrop-blur-md group-hover:border-pink-300 group-hover:bg-pink-500/10 transition-all">
             <Hand className="w-5 h-5 md:w-6 md:h-6 text-white group-hover:text-pink-300" />
           </div>
-          <span className="text-[10px] tracking-[0.2em] uppercase text-white/60 group-hover:text-pink-200">AI Control</span>
+          <span className="text-[10px] tracking-[0.2em] uppercase text-white/60 group-hover:text-pink-200">Jingle Hand</span>
         </button>
 
         <button 
