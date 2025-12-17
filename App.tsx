@@ -142,7 +142,7 @@ function App() {
     <div 
         onClick={handleInitialInteraction} // <--- Only sets interaction flag (Passive)
         onTouchStart={handleInitialInteraction} // Adds support for touch devices
-        className="relative w-full h-screen overflow-hidden bg-black text-white selection:bg-pink-200 selection:text-black"
+        className="relative w-full h-[100dvh] overflow-hidden bg-black text-white selection:bg-pink-200 selection:text-black"
     >
       {/* Declarative Audio Element */}
       <audio 
